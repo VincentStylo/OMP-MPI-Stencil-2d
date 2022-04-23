@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 {
 
     
-    //Creation of Variables
+    // Creation of pointer, row buffer, column buffer
     FILE *fp;
     char rows_A[10], columns_A[10];
     int row, column;
