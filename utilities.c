@@ -1,3 +1,4 @@
+// Included Libraries
 #include <stdlib.h>
 #include <stdio.h>
 #include <omp.h>
@@ -6,9 +7,10 @@
 #include "MyMPI.h"
 #define dtype double
 
+// This Memory Allocation was created by Bob Robey
 double **malloc2D(int jmax, int imax)
 {
-   // first allocate a block of memory for the row pointers and the 2D array
+   // Allocate a block of memory for the row pointers and the 2D array
    double **x = (double **)malloc(jmax*sizeof(double *) + jmax*imax*sizeof(double));
 
    // Now assign the start of the block of memory for the 2D array after the row pointers
@@ -22,6 +24,7 @@ double **malloc2D(int jmax, int imax)
    return(x);
 }
 
+// Function does the Stencil Operation with OpenMP
 double **calc2D_Parallel(double **x, double **xnew, int row, int column)
 {
    #pragma omp parallel for 
@@ -33,6 +36,7 @@ double **calc2D_Parallel(double **x, double **xnew, int row, int column)
    return (xnew);
 }
 
+// Function does the Stencil Operation with OpenMPI
 double **calc2D_MPI(double **x, double **xnew, int row, int column)
 {
    
@@ -53,6 +57,7 @@ double **calc2D_MPI(double **x, double **xnew, int row, int column)
    return (xnew);
 }
 
+// Function does the Stencil Operation with no parallelization
 double **calc2D_Serial(double **x, double **xnew, int row, int column)
 {
    for (int a = 1; a < row - 1; a++){

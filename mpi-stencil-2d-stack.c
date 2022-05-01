@@ -1,12 +1,12 @@
 /* 
  * Code by Jose Martinez Torres
- * This is mpi-stencil-2d
+ * This is MPI-stencil-2d
  * Outputs to screen the elapsed time in seconds, number-
  * of iterations, along with row and column 
  * 
  */
 
-// libraries
+// Libraries
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,11 +16,12 @@
 #include "MyMPI.h"
 #include "utilities.h"
 #include "timer.h"
-#define dtype double
 
+// Definitions
+#define dtype double
 #define SWAP_PTR(xnew,xold,xtmp) (xtmp=xnew, xnew=xold, xold=xtmp)
 
-// main program
+// Main program
 int main(int argc, char *argv[])
 {
     MPI_Init(&argc, &argv);
@@ -48,14 +49,19 @@ int main(int argc, char *argv[])
     dtype **x, *xData;
     dtype **xnew, *xnewData;
 
+    /* First process opens File, reads dimensions from input
+       Then it creates and writes to the output file the dimensions*/
     if (id == 0)
     {
         FILE *fp;
-        printf("Reading from file: %s \n", argv[3]);
         fp = fopen(argv[2], "r");
-        printf("reading in file: %s \n", argv[3]);
+        printf("reading in file: %s\n", argv[2]);
         fread(&row, sizeof(int), 1, fp);
         fread(&column, sizeof(int), 1, fp);
+        fclose(fp);
+        fp = fopen(argv[3], "w");
+        fwrite(&row, sizeof(int), 1, fp);
+        fwrite(&column, sizeof(int), 1, fp);
         fclose(fp);
     }
     
@@ -80,7 +86,7 @@ int main(int argc, char *argv[])
         calc2D_MPI(x, xnew, row, column);
         exchange_row_striped_matix_halo((void **)xnew, MPI_DOUBLE, row, column, MPI_COMM_WORLD);
         MPI_Barrier(MPI_COMM_WORLD);
-        write_row_striped_matrix_halo(argv[3], (void**)x, MPI_DOUBLE, row, column, MPI_COMM_WORLD);
+        write_row_striped_matrix_halo_stack(argv[3], (void**)x, MPI_DOUBLE, row, column, MPI_COMM_WORLD);
         SWAP_PTR(xnew, x, xtmp);
     }
 
@@ -92,6 +98,7 @@ int main(int argc, char *argv[])
     // Frees X, stops the timer, and Ends Program
     free(x);
     free(xnew);
+
     if (id == 0)
     {
         GET_TIME(End);

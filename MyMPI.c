@@ -1344,7 +1344,7 @@ void write_row_striped_matrix_halo_stack(
    // Writes to file only once, as discussed with Dr. William Jones
    if (id == 0)
    {
-      fp = fopen(outFile, "w");
+      fp = fopen(outFile, "a");
    }
 
     if (id == 0 || id == p - 1)

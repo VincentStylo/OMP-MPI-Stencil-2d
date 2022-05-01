@@ -53,7 +53,6 @@ int main(int argc, char *argv[])
         printf("Reading from file: %s \n", argv[2]);
     }
     
-    
 
     // Loads values from <input file>
     read_row_striped_matrix_halo(argv[2], (void ***)&x, (void **)&xData, MPI_DOUBLE, &row, &column, MPI_COMM_WORLD);
