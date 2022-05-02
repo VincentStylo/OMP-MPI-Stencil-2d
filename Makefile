@@ -38,7 +38,7 @@ stencil-2d-stack.o: stencil-2d-stack.c utilities.h
 omp-stencil-2d.o: omp-stencil-2d.c utilities.h
 	$(CC) $(LFLAGS) $(OMP) -c omp-stencil-2d.c
 omp-stencil-2d-stack.o: omp-stencil-2d-stack.c utilities.h
-	$(CC) $(LFLAGS) -c omp-stencil-2d-stack.c
+	$(CC) $(LFLAGS) $(OMP) -c omp-stencil-2d-stack.c
 mpi-stencil-2d.o: mpi-stencil-2d.c utilities.h MyMPI.h
 	$(MCC) $(CFLAGS) -c mpi-stencil-2d.c
 mpi-stencil-2d-stack.o: mpi-stencil-2d-stack.c utilities.h MyMPI.h
