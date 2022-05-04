@@ -42,6 +42,7 @@ int main(int argc, char *argv[])
     // Opens <input file>, reads row and column
     fp = fopen(argv[2], "r");
     printf("reading in file: %s \n", argv[2]);
+    printf("Writing to:%s \n", argv[3]);
     fread(&row, sizeof(int), 1, fp);
     fread(&column, sizeof(int), 1, fp);
    
@@ -67,7 +68,7 @@ int main(int argc, char *argv[])
     for (int i = 0; i < iteration; i++)
     {
         calc2D_Serial(x, xnew, row, column);
-        fwrite(&xnew[0][0], row * column, sizeof(double), fp);
+        fwrite(&x[0][0], row * column, sizeof(double), fp);
         SWAP_PTR(xnew, x, xtmp);
     }
     fwrite(&x[0][0], row * column, sizeof(double), fp);

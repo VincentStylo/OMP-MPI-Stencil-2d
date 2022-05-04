@@ -22,7 +22,7 @@ omp-stencil-2d-stack: utilities.o omp-stencil-2d-stack.o
 mpi-stencil-2d: utilities.o MyMPI.o mpi-stencil-2d.o
 	$(MCC) $(OMP) $(CFLAGS) -o mpi-stencil-2d utilities.o MyMPI.o mpi-stencil-2d.o
 mpi-stencil-2d-stack: utilities.o MyMPI.o mpi-stencil-2d-stack.o
-	$(MCC) $(OMP) $(CFLAGS) -o mpi-stencil-2d-stack utilities.o MyMPI.o mpi-stencil-2d.o
+	$(MCC) $(OMP) $(CFLAGS) -o mpi-stencil-2d-stack utilities.o MyMPI.o mpi-stencil-2d-stack.o
 utilities.o: utilities.c utilities.h MyMPI.h
 	$(MCC) $(OMP) $(LFLAGS) -c utilities.c 
 driver.o: driver.c utilities.h

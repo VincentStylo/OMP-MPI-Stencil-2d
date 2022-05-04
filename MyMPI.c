@@ -1341,7 +1341,6 @@ void write_row_striped_matrix_halo_stack(
    MPI_Comm_size(comm, &p);
    local_rows = BLOCK_SIZE(id, p, m);
 
-   // Writes to file only once, as discussed with Dr. William Jones
    if (id == 0)
    {
       fp = fopen(outFile, "a");
@@ -1395,7 +1394,6 @@ void write_row_striped_matrix_halo_stack(
    }
    else
    {
-
       MPI_Recv(&prompt, 1, MPI_INT, 0, PROMPT_MSG, MPI_COMM_WORLD, &status);
       MPI_Send(*a, (local_rows + temp_m) * n, dtype, 0, RESPONSE_MSG, MPI_COMM_WORLD);
    }

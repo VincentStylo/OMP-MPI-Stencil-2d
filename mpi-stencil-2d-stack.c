@@ -49,23 +49,16 @@ int main(int argc, char *argv[])
     dtype **x, *xData;
     dtype **xnew, *xnewData;
 
-    /* First process opens File, reads dimensions from input
-       Then it creates and writes to the output file the dimensions*/
     if (id == 0)
     {
+        printf("Reading from file: %s \n", argv[2]);
+        printf("Writing to:%s \n", argv[3]);
+        //creates new file
         FILE *fp;
-        fp = fopen(argv[2], "r");
-        printf("reading in file: %s\n", argv[2]);
-        fread(&row, sizeof(int), 1, fp);
-        fread(&column, sizeof(int), 1, fp);
-        fclose(fp);
         fp = fopen(argv[3], "w");
-        fwrite(&row, sizeof(int), 1, fp);
-        fwrite(&column, sizeof(int), 1, fp);
         fclose(fp);
     }
-    
-    
+    MPI_Barrier(MPI_COMM_WORLD);
 
     // Loads values from <input file>
     read_row_striped_matrix_halo(argv[2], (void ***)&x, (void **)&xData, MPI_DOUBLE, &row, &column, MPI_COMM_WORLD);
@@ -89,11 +82,7 @@ int main(int argc, char *argv[])
         write_row_striped_matrix_halo_stack(argv[3], (void**)x, MPI_DOUBLE, row, column, MPI_COMM_WORLD);
         SWAP_PTR(xnew, x, xtmp);
     }
-
-    if (id == 0)
-    {
-        printf("Writing to:%s \n", argv[3]);
-    }
+    write_row_striped_matrix_halo_stack(argv[3], (void**)x, MPI_DOUBLE, row, column, MPI_COMM_WORLD);
     
     // Frees X, stops the timer, and Ends Program
     free(x);
